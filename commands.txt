@@ -1,0 +1,8 @@
+t1,ccw 45
+t1,cw 45
+
+t2,ccw 45
+t2,cw 45
+
+t3,ccw 45
+t3,cw 45
