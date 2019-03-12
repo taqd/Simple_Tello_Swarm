@@ -1,3 +1,30 @@
+# ########################################################################
+#                                                                        #
+#  ____   _         _      ____         _             _    _             #
+# |  _ \ (_) _ __  | | __ |  _ \  ___  | |__    ___  | |_ (_)  ___  ___  #
+# | |_) || || '_ \ | |/ / | |_) |/ _ \ | '_ \  / _ \ | __|| | / __|/ __| #
+# |  __/ | || | | ||   <  |  _ <| (_) || |_) || (_) || |_ | || (__ \__ \ #
+# |_|    |_||_| |_||_|\_\ |_| \_\\___/ |_.__/  \___/  \__||_| \___||___/ #
+#                                                                        #
+# ########################################################################
+
+# Simple swarm control for Tello EDU (SDK 2.0) drones by Ryzn/DJI
+# https://github.com/PinkRobotics/Simple_Tello_Swarm
+
+# Features:
+#   - Control variable number of drones simultaneously
+#   - Drones don't block each other (commands of one drone will not stop
+#     commands of the others to be sent)
+#   - Drones now have a command and can be triggered to continue by
+#   - another drone
+#   - Ctrl-C sends emergency to all drones
+# Limitations:
+#   - All drones need to be on the same network so video streaming is not
+#     available.
+
+# This software comes with no promises. Use at your own risk.
+
+
 import sys
 import time
 import signal
