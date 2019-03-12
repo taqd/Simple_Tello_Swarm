@@ -1,4 +1,4 @@
-## Tello EDU Swarm Control
+## Simple Tello EDU Swarm Control
 
 This is a simple framework to control multiple Tello EDU drone’s simultaneously. The code is largely based upon the [‘Single_Tello_Test’](https://github.com/dji-sdk/Tello-Python/tree/master/Single_Tello_Test) code provided by DJI.
 * Video demonstration #1:
