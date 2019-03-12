@@ -3,7 +3,7 @@
 This is a simple framework to control multiple Tello EDU drone’s simultaneously. The code is largely based upon the [‘Single_Tello_Test’](https://github.com/dji-sdk/Tello-Python/tree/master/Single_Tello_Test) code provided by DJI.
 * Video demonstration #1:
 * Video demonstration #2:
-* Source code: https://github.com/PinkRobotics/Tello
+* Source code: https://github.com/PinkRobotics/Simple_Tello_Swarm
 
 ### Features: 
 * The ability to control a variable number of drones simultaneously
