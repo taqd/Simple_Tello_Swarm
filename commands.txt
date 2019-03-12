@@ -1,8 +1,56 @@
-t1,ccw 45
-t1,cw 45
+t1,takeoff,t2
+t1,go 0 0 100 50 m1
+t1,go 60 0 100 50 m1
+t1,go 0 0 100 50 m4
+t1,cw 180
+t1,forward 60,t2
+t1,cw 180
+t1,go 0 0 50 50 m1
 
-t2,ccw 45
-t2,cw 45
+t2,wait
+t2,takeoff,t3
+t2,go 0 0 0 50 m2
 
-t3,ccw 45
-t3,cw 45
+t2,wait
+t2,go 90 0 50 50 m2
+t2,go 0 0 50 50 m4
+t2,cw 180
+t2,forward 90,t3
+t2,cw 180
+t2,go 0 0 50 50 m2
+
+t3,wait
+t3,takeoff
+t3,go 0 0 50 50 m3
+
+t3,wait
+t3,go 90 0 50 50 m3
+t3,go 0 0 50 50 m4
+t3,cw 180
+t3,forward 90,t1
+t3,cw 180
+t3,go 0 0 50 50 m3,t1
+
+t1,wait
+t1,go 90 0 50 50 m1
+t1,go 0 0 50 50 m4
+t1,cw 180
+t1,forward 90,t2
+t1,cw 180
+t1,go 0 0 50 50 m1
+
+t2,wait
+t2,go 90 0 50 50 m2
+t2,go 0 0 50 50 m4
+t2,cw 180
+t2,forward 90,t3
+t2,cw 180
+t2,go 0 0 50 50 m2
+
+t3,wait
+t3,go 90 0 50 50 m3
+t3,go 0 0 50 50 m4
+t3,cw 180
+t3,forward 90
+t3,cw 180
+t3,go 0 0 50 50 m3

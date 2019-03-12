@@ -26,40 +26,44 @@ signal.signal(signal.SIGINT, signal_handler)
 #The thread that will read the acknowledgements and trigger commands
 def _receive_thread():
     while True:
-        try:
-            response, (ip, port) = socket.recvfrom(1024)
-            response = response.rstrip()
+        response, (ip, port) = socket.recvfrom(1024)
+        response = response.rstrip()
 
-            for tello in tellos:
-                if ip != tello.address:
-                    continue
+        for tello in tellos:
+            if ip != tello.address:
+                continue
 
-                if tello.last_command == 'command' and response == 'ok':
-                    print 'Tello %s (%s) has connected' % (tello.name,ip)
-                    tello.online = True
+            if tello.last_command == 'command' and response == 'ok':
+                print 'Tello %s (%s) has connected' % (tello.name,ip)
+                tello.online = True
 
-                elif tello.last_command == 'battery?':
-                    tello.battery = int(response)
-                    if tello.battery <= 10:
-                        print 'Tello %s (%s) LOW BATTERY: %s' % (tello.name, ip, response)
-                        tello.online = False
-                        tello.error = True
-                    else:
-                        print 'Tello %s (%s) Battery: %s' % (tello.name, ip, response)
-
-                elif response == 'error':
-                    print 'Tello %s (%s) ERROR on %s : %s' % \
-                        (tello.name, ip, tello.last_command, response)
+            elif tello.last_command == 'battery?':
+                tello.battery = int(response)
+                if tello.battery <= 10:
+                    print 'Tello %s (%s) LOW BATTERY: %s' % (tello.name, ip, response)
+                    tello.online = False
                     tello.error = True
-
                 else:
-                    print 'Tello %s (%s) %s: %s' % \
-                        (tello.name, ip, tello.last_command, response)
+                    print 'Tello %s (%s) Battery: %s' % (tello.name, ip, response)
 
-                tello.ready_next_command()
+            elif response == 'error':
+                print 'Tello %s (%s) ERROR on %s : %s' % \
+                    (tello.name, ip, tello.last_command, response)
+                tello.error = True
 
-        except:
-            print 'Caught exception on socket with (%s) : %s' % (ip,response)
+            else:
+                print 'Tello %s (%s) %s: %s' % \
+                    (tello.name, ip, tello.last_command, response)
+
+            if tello.last_trigger != '':
+                trigger_num = int(tello.last_trigger[1:]) - 1 #ignore the 't' and adjust
+                tellos[trigger_num].wait = False
+                tello.last_trigger = ''
+                print 'Tello %s is triggering Tello %s' % (tello.name,trigger_num)
+                tellos[trigger_num].ready_next_command();
+
+            tello.ready_next_command()
+
 
 #Start the receiving thread
 receive_thread = threading.Thread(target=_receive_thread)
@@ -97,16 +101,24 @@ for command in commands:
     #Command string format: t<drone number>,<command>, for example: t1,takeoff
     command_list = command.split(',')
     tello_num_str = 't1' #default if unspecified
+    triggers = ''
     if len(command_list) == 1:
         command = command_list[0]
     elif len(command_list) == 2:
         tello_num_str = command_list[0]
         command = command_list[1]
+    else:
+        tello_num_str = command_list[0]
+        command = command_list[1]
+        triggers = command_list[2]
     tello_num = int(tello_num_str[1:]) - 1 #ignore the 't' and adjust for 0-index
 
     #Add the full command string to the drones command list
-    tellos[tello_num].commands.append(command)
-    #print 'Test: %s %s' % (tello_num,command)
+    if triggers == '':
+        tellos[tello_num].commands.append(command)
+    else:
+        tellos[tello_num].commands.append(command + ',' + triggers)
+        #print 'Test: %s %s' % (tello_num,command)
 commands_file.close()
 
 #Start each of the drones
@@ -119,6 +131,7 @@ time.sleep(2)
 
 #Wait for the other drones to finish
 while tello_counter != 0:
+
     for tello in tellos:
 
         #Disconnect a tello that ran out of commands
