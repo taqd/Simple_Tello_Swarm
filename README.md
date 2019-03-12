@@ -1,4 +1,4 @@
-## Tello EDU Swarm Control
+# Tello EDU Swarm Control
 
 This is a simple framework to control multiple Tello EDU drone’s simultaneously. The code is largely based upon the [‘Single_Tello_Test’](https://github.com/dji-sdk/Tello-Python/tree/master/Single_Tello_Test) code provided by DJI.
 * Video demonstration #1:
@@ -22,8 +22,6 @@ The primary challenge here was ensuring that the drones take turns and don’t r
 * Picks up water (down and up again) 
 * Loops several times. 
 
-
-
 ### Details:
 * Drone hardware: Tello EDU by Ryze/DJI
 * Drone SDK: Tello SDK 2.0
@@ -40,7 +38,7 @@ The primary challenge here was ensuring that the drones take turns and don’t r
 
    Note: All commands are read, distributed to each drone, and then sent out. The response from a command triggers the next one to be sent.
 
-### Command format in commands.txt 
+### Command format in commands.txt:
 Note: Drone count starts at 1 and is the first address in the address file, and the trigger is optional: 
 ```
 t<drone number>, command[, trigger]
@@ -56,8 +54,6 @@ t1,land
 
 ### Example 2: 
 First drone (t1) takes off, and second drone (t2) waits. Then once t1 has finished taking off, it triggers t2 to take off. Then t1 will land, and then t2 will land.
-
-Note: the ordering of t1 and t2 commands relative to each other does not matter (ie. t1,cmd / t2,cmd / t1,takeoff,t2 / ... would yield the same result)
 ```
 t1,cmd
 t1,takeoff,t2
