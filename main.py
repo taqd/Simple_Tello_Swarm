@@ -1,28 +1,29 @@
-# ########################################################################
-#                                                                        #
-#  ____   _         _      ____         _             _    _             #
-# |  _ \ (_) _ __  | | __ |  _ \  ___  | |__    ___  | |_ (_)  ___  ___  #
-# | |_) || || '_ \ | |/ / | |_) |/ _ \ | '_ \  / _ \ | __|| | / __|/ __| #
-# |  __/ | || | | ||   <  |  _ <| (_) || |_) || (_) || |_ | || (__ \__ \ #
-# |_|    |_||_| |_||_|\_\ |_| \_\\___/ |_.__/  \___/  \__||_| \___||___/ #
-#                                                                        #
-# ########################################################################
+# ##############################################################################
+#                                                                              #
+#    ____   _         _        ____         _             _    _               #
+#   |  _ \ (_) _ __  | | __   |  _ \  ___  | |__    ___  | |_ (_)  ___  ___    #
+#   | |_) || || '_ \ | |/ /   | |_) |/ _ \ | '_ \  / _ \ | __|| | / __|/ __|   #
+#   |  __/ | || | | ||   <    |  _ <| (_) || |_) || (_) || |_ | || (__ \__ \   #
+#   |_|    |_||_| |_||_|\_\   |_| \_\\___/ |_.__/  \___/  \__||_| \___||___/   #
+#                                                                              #
+# ##############################################################################
+# This software comes with no promises. Use at your own risk.
+
 
 # Simple swarm control for Tello EDU (SDK 2.0) drones by Ryzn/DJI
-# https://github.com/PinkRobotics/Simple_Tello_Swarm
-
+#   https://github.com/PinkRobotics/Simple_Tello_Swarm
+#
 # Features:
 #   - Control variable number of drones simultaneously
 #   - Drones don't block each other (commands of one drone will not stop
 #     commands of the others to be sent)
 #   - Drones now have a command and can be triggered to continue by
-#   - another drone
+#     another drone
 #   - Ctrl-C sends emergency to all drones
+#
 # Limitations:
 #   - All drones need to be on the same network so video streaming is not
 #     available.
-
-# This software comes with no promises. Use at your own risk.
 
 
 import sys
@@ -53,13 +54,17 @@ signal.signal(signal.SIGINT, signal_handler)
 #The thread that will read the acknowledgements and trigger commands
 def _receive_thread():
     while True:
+
+        #Listen to the socket
         response, (ip, port) = socket.recvfrom(1024)
         response = response.rstrip()
 
+        #Find the tello that this response came from
         for tello in tellos:
             if ip != tello.address:
                 continue
 
+            #Each tello stores the command that was just executed, last_command
             if tello.last_command == 'command' and response == 'ok':
                 print 'Tello %s (%s) has connected' % (tello.name,ip)
                 tello.online = True
@@ -82,13 +87,21 @@ def _receive_thread():
                 print 'Tello %s (%s) %s: %s' % \
                     (tello.name, ip, tello.last_command, response)
 
+            #Check if there was a trigger in the previous command
             if tello.last_trigger != '':
+
+                #If there was, find which tello it was referring to
                 trigger_num = int(tello.last_trigger[1:]) - 1 #ignore the 't' and adjust
+
+                #Set that tello up to be triggered
                 tellos[trigger_num].wait = False
                 tello.last_trigger = ''
+
+                #Trigger the tello
                 print 'Tello %s is triggering Tello %s' % (tello.name,trigger_num)
                 tellos[trigger_num].ready_next_command();
 
+            #Prepare and (possibly) send the next command
             tello.ready_next_command()
 
 
@@ -153,7 +166,7 @@ for tello in tellos:
     if len(tello.commands) > 0:
         tello.start_default()
 
-#Give the drones a moment to startup
+#Give the drones a moment to start
 time.sleep(2)
 
 #Wait for the other drones to finish

@@ -1,0 +1,18 @@
+# Simple demo
+# Command format: t<drone number>,command[,trigger]
+# Trigger format: t<drone number>
+
+##These are all automatically added in the start_default() function
+# t1,cmd
+# t1,battery?
+# t1,mon
+# t1,mdirection 0
+
+# Drone 1 takes off and when finished taking off, triggers t2 and lands
+t1,takeoff,t2
+t1,land
+
+# Drone 2 waits for a trigger, then takes off once received and then lands
+t2,wait
+t2,takeoff
+t2,land

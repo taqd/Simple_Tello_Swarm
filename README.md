@@ -2,11 +2,11 @@
 
 This is a simple framework to control multiple Tello EDU drone’s simultaneously.
 
-The code is largely based upon the [‘Single_Tello_Test’]
-(https://github.com/dji-sdk/Tello-Python/tree/master/Single_Tello_Test)
+The code is largely based upon the [‘Single_Tello_Test’](https://github.com/dji-sdk/Tello-Python/tree/master/Single_Tello_Test)
 code provided by DJI.
 
-* Video demonstration:
+* Video of 'firefighting' demo:
+* Video of 'sock delivery' demo:
 * Source code: https://github.com/PinkRobotics/Simple_Tello_Swarm
 
 ### Features:
@@ -23,7 +23,9 @@ code provided by DJI.
 ### The demo: Putting out a 'fire'
 The primary challenge here was ensuring that the drones take turns and don’t run
 into each other while over the 'fire'.
-* In turn, a drone goes to the 'fire' (the pink middle mat)
+
+Each drone, in turn, does:
+* Goes to the 'fire' (the pink middle mat)
 * Drops water on the 'fire' (indicated by going down and up)
 * Returns to a 'lake' (the blue mats)
 * Picks up water (down and up again)
@@ -40,10 +42,11 @@ into each other while over the 'fire'.
 * addresses.txt - Holds the IP addresses of each drone
 
    Note: This requires all drones to be on the same network -- use the ‘ap’
-   command to do this.
+   command to do this. I followed [this](https://www.youtube.com/watch?v=cIsddY4SKgA) tutorial.
 
-* commands.txt - Holds the list of commands to be run (currently set to the
-commands that ran the demo)
+* commands\_bare.txt
+* commands\_simple.txt
+* commands\_fire.txt
 
    Note: All commands are read, distributed to each drone, and then sent out.
    The response from a command triggers the next one to be sent.
@@ -55,18 +58,18 @@ the trigger is optional:
 t<drone number>, command[, trigger]
 ```
 
-### Example 1:
-First drone in address file takes off and lands
+### Example 1: Bare minimum
+First drone in address file takes off and lands. See commands_bare.txt
 ```
 t1,cmd
 t1,takeoff
 t1,land
 ```
 
-### Example 2:
+### Example 2: Two drones with trigger
 First drone (t1) takes off, and second drone (t2) waits. Then once t1 has
 finished taking off, it triggers t2 to take off. Then t1 will land, and then t2
-will land.
+will land. See commands_simple.txt
 ```
 t1,cmd
 t1,takeoff,t2
@@ -77,6 +80,9 @@ t2,wait
 t2,takeoff
 t2,land
 ```
+
+### Example 3: Fighting a fire
+See commands_fire.txt
 
 ### Execution command:
 ```
