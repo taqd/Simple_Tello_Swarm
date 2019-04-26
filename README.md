@@ -6,7 +6,9 @@ The code is largely based upon the [‘Single_Tello_Test’](https://github.com/
 code provided by DJI.
 
 * Video of 'firefighting' demo:
-* Video of 'sock delivery' demo:
+
+[![Swarm firefighting](https://img.youtube.com/vi/1f_WuuIy3Vc/0.jpg)](https://www.youtube.com/watch?v=1f_WuuIy3Vc)
+
 * Source code: https://github.com/PinkRobotics/Simple_Tello_Swarm
 
 ### Features:
